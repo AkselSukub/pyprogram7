@@ -1,24 +1,38 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Исходный список вещественных элементов
-original_list = [4.5, -2.0, 1.2, -3.8, 2.7, 5.1, -1.5, 3.3]
+def calculate_sum_odd_indices(numbers):
+    odd_indices_sum = sum(numbers[1::2])
+    return odd_indices_sum
 
-# Переупорядочивание элементов массива: сортировка по возрастанию
-sorted_list = sorted(original_list)
+def calculate_sum_between_negatives(numbers):
+    first_negative_index = -1
+    last_negative_index = -1
 
-# Вычисление суммы элементов списка с нечетными номерами
-sum_odd_indices = sum(sorted_list[1::2])
+    for i, num in enumerate(numbers):
+        if num < 0:
+            if first_negative_index == -1:
+                first_negative_index = i
+            last_negative_index = i
 
-# Находим индексы первого и последнего отрицательных элементов
-first_negative_index = sorted_list.index(next(x for x in sorted_list if x < 0))
-last_negative_index = sorted_list.index(next(x for x in reversed(sorted_list) if x < 0))
+    if first_negative_index == -1 or last_negative_index == -1:
+        return 0
 
-# Вычисление суммы элементов списка между первым и последним отрицательными элементами
-sum_between_negatives = sum(sorted_list[first_negative_index+1:last_negative_index])
+    sum_between_negatives = sum(numbers[first_negative_index+1:last_negative_index])
+    return sum_between_negatives
 
-# Вывод результатов
-print(f'Исходный список: {original_list}')
-print(f'Переупорядоченный список: {sorted_list}')
-print(f'Сумма элементов с нечетными номерами: {sum_odd_indices}')
-print(f'Сумма элементов между первым и последним отрицательными: {sum_between_negatives}')
+def compress_list(numbers):
+    compressed_list = [num for num in numbers if abs(num) > 1]
+    compressed_list.extend([0] * (len(numbers) - len(compressed_list)))
+    return compressed_list
+
+if __name__ == "__main__":
+    numbers = [1.5, -2.3, 4.7, -3.2, 2.8, 0.9, -1.1, 5.2, -4.6]
+
+    sum_odd_indices = calculate_sum_odd_indices(numbers)
+    sum_between_negatives = calculate_sum_between_negatives(numbers)
+    compressed_list = compress_list(numbers)
+
+    print("Сумма элементов списка с нечетными номерами:", sum_odd_indices)
+    print("Сумма элементов списка между первым и последним отрицательными элементами:", sum_between_negatives)
+    print("Сжатый список:", compressed_list)
